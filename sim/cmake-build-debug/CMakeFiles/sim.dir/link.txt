@@ -1,0 +1,1 @@
+/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/sim.dir/simulator.c.o CMakeFiles/sim.dir/bstr.c.o CMakeFiles/sim.dir/comp.c.o  -o sim.exe -Wl,--out-implib,libsim.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
