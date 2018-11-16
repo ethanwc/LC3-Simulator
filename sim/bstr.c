@@ -146,28 +146,3 @@ void BSTR_Append(BitString *result, BitString bstr1, BitString bstr2) {
 int BSTR_Length(BitString bstr) {
 	return bstr.length;
 }
-
-void BSTR_Add(BitString *result, BitString bstr1, BitString bstr2) {
-
-    int val = BSTR_GetValueTwosComp(bstr1) + BSTR_GetValueTwosComp(bstr2);
-    printf("val: %d\n", val);
-
-    if (val > 0) BSTR_SetValue(result, val, 16);
-    else BSTR_SetValueTwosComp(result, val, 16);
-
-    printf("string1: ");
-    BSTR_Display(bstr1, 1);
-    printf("\n");
-
-    printf("string2: ");
-    BSTR_Display(bstr2, 1);
-    printf("\n");
-
-    printf("Result:  ");
-    BSTR_Display(*result, 1);
-    printf("\n");
-}
-
-void BSTR_Load(BitString *result, BitString bstr1, BitString bstr2) {
-
-}

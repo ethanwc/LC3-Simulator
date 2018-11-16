@@ -36,5 +36,13 @@ void COMP_ExecuteNot(Computer *comp);
 
 void COMP_ExecuteAdd(Computer *comp);
 
+void COMP_ExecuteNot(Computer *comp);
+
+void COMP_ExecuteBranch(Computer *comp);
+
+void COMP_ExecuteLoad(Computer comp);
+
+void COMP_ExecuteTrap(Computer *comp, int* running);
+
 #endif
 
