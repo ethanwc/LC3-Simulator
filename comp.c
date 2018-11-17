@@ -41,36 +41,31 @@ void COMP_ExecuteNot(Computer *comp) {
     if (!value) BSTR_SetValue(&(comp->cc), 2, 3);
 
 }
-
 void COMP_ExecuteAdd(Computer *comp) {
     BitString immediate, drBS, srBS0, srBS1, srBS2;
-    int value, originalregister, status;
+    int value, sr1Value, status;
 
     //Access the 'immediate' part of instruction
     BSTR_Substring(&immediate, comp->ir, 10, 1);
 
-    //get value of immediate bit
     value = BSTR_GetValue(immediate);
 
-    //find source and destination register
-    BSTR_Substring(&drBS, comp->ir, 4, 3);
-    BSTR_Substring(&srBS1, comp->ir, 7, 3);
-
-    //determine value of original register
-    originalregister = BSTR_GetValueTwosComp(comp->reg[BSTR_GetValue(srBS0)]);
+    BSTR_Substring(&drBS, comp->ir, 4, 3);  // Fetch the destination register index
+    BSTR_Substring(&srBS1, comp->ir, 7, 3); // Fetch the SR1 register index
+    sr1Value = BSTR_GetValueTwosComp(comp->reg[BSTR_GetValue(srBS1)]); // Fetch the SR1 register value
 
     //if immediate mode
     if (value) {
         BSTR_Substring(&srBS2, comp->ir, 11, 5);
-        int immediate_int = BSTR_GetValueTwosComp(srBS2);
+        int immediate = BSTR_GetValueTwosComp(srBS2);
         //adds register and immediate value
-        BSTR_SetValueTwosComp(&comp->reg[BSTR_GetValue(drBS)], originalregister + immediate_int, 16);
-    //not immediate
+        BSTR_SetValueTwosComp(&comp->reg[BSTR_GetValue(drBS)], sr1Value + immediate, 16);
+        //not immediate
     } else {
-        BSTR_Substring(&srBS2, comp->ir, 13, 3);
+        BSTR_Substring(&srBS2, comp->ir, 13, 3); // Fetch the SR2 register index
         //add two registers
-        int newregister = BSTR_GetValueTwosComp(comp->reg[BSTR_GetValue(drBS)]);
-        BSTR_SetValueTwosComp(&comp->reg[BSTR_GetValue(drBS)], originalregister + newregister, 16);
+        int sr2Value = BSTR_GetValueTwosComp(comp->reg[BSTR_GetValue(srBS2)]);// Fetch the SR2 register value
+        BSTR_SetValueTwosComp(&comp->reg[BSTR_GetValue(drBS)], sr1Value + sr2Value, 16);
     }
 
     //get the 'operator value'
@@ -79,7 +74,6 @@ void COMP_ExecuteAdd(Computer *comp) {
     if (status > 0) BSTR_SetValue(&(comp->cc), 1, 3);
     if (status < 0) BSTR_SetValue(&(comp->cc), 4, 3);
     if (!status) BSTR_SetValue(&(comp->cc), 2, 3);
-
 }
 
 void COMP_ExecuteLoad(Computer *comp) {
@@ -100,26 +94,6 @@ void COMP_ExecuteLoad(Computer *comp) {
     if (status < 0) BSTR_SetValue(&(comp->cc), 4, 3);
     if (!status) BSTR_SetValue(&(comp->cc), 2, 3);
 
-}
-
-void COMP_ExecuteBranch(Computer *comp) {
-    BitString branch, pc, value;
-    int offset, value_int, cond;
-
-    //break apart instruction
-    BSTR_Substring(&pc, comp->ir, 7, 9);
-    BSTR_Substring(&branch, comp->ir, 0, 3);
-    BSTR_Substring(&value, comp->ir, 4, 3);
-
-    //determine condition
-    cond = BSTR_GetValue(branch);
-    //determine actual value
-    value_int = BSTR_GetValue(value);
-    //determine offset
-    offset = BSTR_GetValueTwosComp(pc) + BSTR_GetValue(comp->pc);
-
-    //sets pc based on offset from branch (if conditions met)
-    if (cond && value_int) BSTR_SetValue(&comp->pc, offset, 16);
 }
 
 void COMP_ExecuteTrap(Computer *comp, int* isRunning) {
@@ -156,6 +130,26 @@ void COMP_Execute(Computer* comp) {
         if (opCodeInt == 15) COMP_ExecuteTrap(comp, run); //TRAP (output/halt)
     }
 }
+
+
+void COMP_ExecuteBranch(Computer *comp) {
+    BitString cond, state, pc;
+    int offset, state_int, condition;
+
+    //break apart instruction
+    BSTR_Substring(&pc,comp->ir,7,9);
+    BSTR_Substring(&state,comp->ir,4,3);
+    BSTR_Substring(&cond,comp->cc,0,3);
+
+    //determine jump offset
+    offset = BSTR_GetValueTwosComp(pc) + BSTR_GetValue(comp->pc);
+    condition = BSTR_GetValue(cond);
+    state_int = BSTR_GetValue(state);
+
+    //sets pc based on offset from branch (if conditions met)
+    if ((condition & state_int)) BSTR_SetValue(&comp->pc, offset, 16);
+}
+
 
 
 void COMP_Display(Computer cmp) {
