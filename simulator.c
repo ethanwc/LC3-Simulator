@@ -1,5 +1,6 @@
 /*
  * TCSS 371 hw 4
+ * Used CLion
  * Ethan Cheatham
  * Carl Argabright
  */

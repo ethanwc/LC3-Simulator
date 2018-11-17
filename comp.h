@@ -42,6 +42,7 @@ void COMP_ExecuteBranch(Computer *comp);
 /* Performs LD operation */
 void COMP_ExecuteLoad(Computer *comp);
 
+/* Performs Trap operation */
 void COMP_ExecuteTrap(Computer *comp, int* running);
 
 /* Performs Set Condition Code operation */

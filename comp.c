@@ -106,7 +106,7 @@ void COMP_ExecuteTrap(Computer *comp, int* isRunning) {
     BSTR_Substring(&trap, comp->ir, 8, 8);
     id = BSTR_GetValue(trap);
 
-    if (id == 33) printf("%c\n", BSTR_GetValue(comp->reg[0])); // OUTPUT
+    if (id == 33) printf("%c", BSTR_GetValue(comp->reg[0])); // OUTPUT
     if (id == 37) *isRunning = 0; // HALT
 }
 
