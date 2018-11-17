@@ -69,11 +69,14 @@ void COMP_ExecuteAdd(Computer *comp) {
     }
 
     //get the 'operator value'
-    status = BSTR_GetValue(comp->reg[BSTR_GetValue(drBS)]);
+//    status = BSTR_GetValue(comp->reg[BSTR_GetValue(drBS)]);
 
-    if (status > 0) BSTR_SetValue(&(comp->cc), 1, 3);
-    if (status < 0) BSTR_SetValue(&(comp->cc), 4, 3);
-    if (!status) BSTR_SetValue(&(comp->cc), 2, 3);
+//    if (status > 0) BSTR_SetValue(&(comp->cc), 1, 3);
+//    if (status < 0) BSTR_SetValue(&(comp->cc), 4, 3);
+//    if (!status) BSTR_SetValue(&(comp->cc), 2, 3);
+
+    /* Update the CC flag */
+    COMP_ExecuteSetCC(comp, comp->reg[ BSTR_GetValue(drBS)]);
 }
 
 void COMP_ExecuteLoad(Computer *comp) {
@@ -155,22 +158,22 @@ void COMP_ExecuteBranch(Computer *comp) {
 void COMP_Display(Computer cmp) {
     int r, m;
     printf("\n");
-    
+
     printf("PC ");
     BSTR_Display(cmp.pc,1);
     printf("   ");
-    
-    
+
+
     printf("IR ");
     BSTR_Display(cmp.ir,1);
     printf("   ");
-    
-    
+
+
     printf("CC ");
     BSTR_Display(cmp.cc,1);
     printf("\n");
-    
-    
+
+
     for (r = 0; r < 8; r++) {
         printf("R%d ",r);
         BSTR_Display(cmp.reg[r], 1);
@@ -183,12 +186,27 @@ void COMP_Display(Computer cmp) {
     for (m = 0; m < MAXMEM; m++) {
         printf("%3d ",m);
         BSTR_Display(cmp.mem[m], 1);
-        
+
         if (m % 3 == 2)
             printf("\n");
         else
             printf("    ");
     }
     printf("\n");
+}
+
+void COMP_ExecuteSetCC(Computer *comp, BitString bs) {
+
+    int result = BSTR_GetValueTwosComp(bs);
+
+    if (result < 0) {
+        BSTR_SetValue(&(comp->cc),4,3);
+    } /* If resulting bitstring is negative set CC <- 100 */
+    else if (result > 0) {
+        BSTR_SetValue(&(comp->cc),1,3);
+    } /* If resulting bitstring is positive set CC <- 001 */
+    else {
+        BSTR_SetValue(&(comp->cc),2,3);
+    } /* If resulting bitstring is zero set CC <- 010 */
 }
 

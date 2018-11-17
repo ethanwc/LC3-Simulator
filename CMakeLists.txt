@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
-project(sim C)
+project(371_hw4_git C)
 
-set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD 90)
 
-add_executable(sim simulator.c bstr.c bstr.h comp.c comp.h)
+add_executable(371_hw4_git simulator.c bstr.c bstr.h comp.c comp.h)

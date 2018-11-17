@@ -6,11 +6,11 @@
 #define MAXMEM 50
 
 struct compType {
-	BitString reg[8];
+    BitString reg[8];
     BitString mem[MAXMEM];
-	BitString pc;
+    BitString pc;
     BitString ir;
-	BitString cc;  /* condition code */
+    BitString cc;  /* condition code */
 };
 
 typedef struct compType Computer;
@@ -36,14 +36,18 @@ void COMP_ExecuteNot(Computer *comp);
 /* Performs Add operation */
 void COMP_ExecuteAdd(Computer *comp);
 
-/* Performs Branch Operation */
+/* Performs BR operation */
 void COMP_ExecuteBranch(Computer *comp);
 
-/* Performs Load Operation */
+/* Performs LD operation */
 void COMP_ExecuteLoad(Computer *comp);
 
-/* Performs Trap Operation */
 void COMP_ExecuteTrap(Computer *comp, int* running);
+
+/* Performs Set Condition Code operation */
+/* Sets condition code based on the given bit strings value
+   interpreted as 2's complement being n, z, or p */
+void COMP_ExecuteSetCC(Computer *comp, BitString bs);
 
 #endif
 

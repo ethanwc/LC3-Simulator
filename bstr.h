@@ -4,18 +4,18 @@
 #define MAXBITS  16
 
 
-typedef struct bitStringType BitString;	
+typedef struct bitStringType BitString;
 
 struct bitStringType {    /* char generally hold the ascii code of some character. */
-	char bits[MAXBITS];   /* char can also be thought of as a small int. */
-	int length;           /* These bit strings are made of 0's and 1's */
+    char bits[MAXBITS];   /* char can also be thought of as a small int. */
+    int length;           /* These bit strings are made of 0's and 1's */
 };                        /* - not the ascii codes of 0 and 1 (48 and 49) */
-                          /* This bit string is NOT zero-terminated like a */
-						  /* c string would be.  Instead the length field */
-						  /* keeps track of how long the string is. */
-                          /* The maximum size is 16.  */
-						  
-					  
+/* This bit string is NOT zero-terminated like a */
+/* c string would be.  Instead the length field */
+/* keeps track of how long the string is. */
+/* The maximum size is 16.  */
+
+
 
 /* bits is a c-string (array of ascii codes ending with 0). */
 /* It should be made of 0's and 1's - "0110" for example. */
@@ -65,6 +65,5 @@ void BSTR_Substring(BitString* substr, BitString source,
 /* returns the length of the bistring (i.e. the number of bits) */
 int BSTR_Length(BitString bstr);
 
+
 #endif
-
-
