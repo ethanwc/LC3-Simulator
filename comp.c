@@ -1,3 +1,7 @@
+/**
+ * TCSS 371 HW $
+ * Ethan Cheatham
+ */
 #include <stdio.h>
 #include "bstr.h"
 #include "comp.h"
@@ -29,7 +33,6 @@ void COMP_ExecuteNot(Computer *comp) {
     BSTR_Substring(&srBS,comp->ir,7,3);
     comp->reg[ BSTR_GetValue(drBS) ] = comp->reg[ BSTR_GetValue(srBS) ];
     BSTR_Invert( & comp->reg[ BSTR_GetValue(drBS)  ]  );
-
     value = BSTR_GetValueTwosComp(comp->reg[BSTR_GetValue(drBS)]);
 
     //set value for condition
@@ -46,11 +49,14 @@ void COMP_ExecuteAdd(Computer *comp) {
     //Access the 'immediate' part of instruction
     BSTR_Substring(&immediate, comp->ir, 10, 1);
 
+    //get value of immediate bit
     value = BSTR_GetValue(immediate);
 
+    //find source and destination register
     BSTR_Substring(&drBS, comp->ir, 4, 3);
     BSTR_Substring(&srBS1, comp->ir, 7, 3);
 
+    //determine value of original register
     originalregister = BSTR_GetValueTwosComp(comp->reg[BSTR_GetValue(srBS0)]);
 
     //if immediate mode
@@ -74,23 +80,21 @@ void COMP_ExecuteAdd(Computer *comp) {
     if (status < 0) BSTR_SetValue(&(comp->cc), 4, 3);
     if (!status) BSTR_SetValue(&(comp->cc), 2, 3);
 
-
-
 }
 
 void COMP_ExecuteLoad(Computer *comp) {
     BitString drBS, pc;
     int offset, status;
 
+    BSTR_Substring(&pc, comp->ir, 7, 9);
     BSTR_Substring(&drBS, comp->ir, 4, 3);
-    BSTR_Substring(&drBS, comp->ir, 7, 9);
     //determine offset 'location' in memory of where to operate.
     offset = BSTR_GetValueTwosComp(pc) + BSTR_GetValue(comp->pc);
     //load into register
     BSTR_SetValue(&(comp->reg[BSTR_GetValue(drBS)]), BSTR_GetValueTwosComp(comp->mem[offset]), 16);
 
-    status = BSTR_GetValueTwosComp(comp->reg[BSTR_GetValue(drBS)]);
 
+    status = BSTR_GetValueTwosComp(comp->reg[BSTR_GetValue(drBS)]);
 
     if (status > 0) BSTR_SetValue(&(comp->cc), 1, 3);
     if (status < 0) BSTR_SetValue(&(comp->cc), 4, 3);
@@ -114,7 +118,7 @@ void COMP_ExecuteBranch(Computer *comp) {
     //determine offset
     offset = BSTR_GetValueTwosComp(pc) + BSTR_GetValue(comp->pc);
 
-    //sets pc based on offset from branch
+    //sets pc based on offset from branch (if conditions met)
     if (cond && value_int) BSTR_SetValue(&comp->pc, offset, 16);
 }
 
@@ -122,18 +126,19 @@ void COMP_ExecuteTrap(Computer *comp, int* isRunning) {
     BitString trap;
     int id;
     //get trap op code 'id'
-    //    BSTR_Substring(&trap, comp->ir, 8, 8);
+    BSTR_Substring(&trap, comp->ir, 8, 8);
     id = BSTR_GetValue(trap);
 
-    if (id == 33) printf("%c", BSTR_GetValue(comp->reg[0])); // OUTPUT
+    if (id == 33) printf("%c\n", BSTR_GetValue(comp->reg[0])); // OUTPUT
     if (id == 37) *isRunning = 0; // HALT
 }
 
 void COMP_Execute(Computer* comp) {
     BitString opCode;
+    //start off running
     int opCodeInt, isRunning = 1, *run = &isRunning;
 
-    //only 50 memory locations pre defined
+    //only 50 memory locations pre defined, program not halted
     while (isRunning && BSTR_GetValue(comp->pc) < 50) {
 
         /* use the PC to load current instruction from memory into IR */
@@ -148,8 +153,7 @@ void COMP_Execute(Computer* comp) {
         if (opCodeInt == 0) COMP_ExecuteBranch(comp); //BRANCH
         if (opCodeInt == 1) COMP_ExecuteAdd(comp); //ADD
         if (opCodeInt == 2) COMP_ExecuteLoad(comp); //LOAD
-        if (opCodeInt == 15) COMP_ExecuteTrap(comp, &isRunning); //TRAP
-
+        if (opCodeInt == 15) COMP_ExecuteTrap(comp, run); //TRAP (output/halt)
     }
 }
 

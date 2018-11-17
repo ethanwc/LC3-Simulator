@@ -1,3 +1,9 @@
+/*
+ * TCSS 371 HW 4
+ * Ethan Cheatham
+ *
+ *
+ */
 #include <stdio.h>
 
 #include "bstr.h"
@@ -42,117 +48,39 @@ void bitStringTest(void) {
 	printf("\n");
 }
 
-void testAdd() {
-
-    BitString bStr1;
-    BitString bStr2;
-    BitString bStr3;
-
-    BSTR_SetValueTwosComp(&bStr1, 14, 16);
-    BSTR_SetValue(&bStr2, 10, 16);
-
-
-
-
-}
-
 int main(int argc, const char * argv[]) {
 
-    testAdd();
-//    Computer comp;
+    Computer comp;
+    int programSize = 10;
+    BitString instruction;
 
-/************************************** */
-/** The next two variables - program and programSize - */
-/** allow someone using the simulator (such as a grader) */
-/** to decide what program will be simulated. */
-/** The simulation must load and execute */
-/** instructions found in the "program" array. */
-/** For grading purposes, it must be possible for me to */
-/**    - paste in a different set of binary strings to replace the existing ones */
-/**    - adjust the programSize variable */
-/**    - recompile your program without further changes */
-/**    and see the simulator load and execute the new program. */
-/**    Your grade will depend largely on how well that works. */
-/************************************** */
-
-//    char* program[] =
-//    {
-//     "0010000000000111",
-//     "0010001000000111",
-//     "0001010000000001",
-//     "0000010000000011",
-//     "1111000000100001",
-//     "0001000000111111",
-//     "0000111111111011",
-//     "1111000000100101",
-//     "0000000000111001",
-//     "1111111111010000"
-//	 };
-//
-//    int programSize = 10;
-
-//	BitString notInstr;
-
-    /*  You may find it useful to play around with the */
-	/*  BitString routines.  Some code that does that is provided */
-    /*  in the following commented out function. */
-
-//     bitStringTest();
-
-/*   This is the assembly program that was compiled into the binary
-     program shown above.
-    .ORIG x3000
-
-            LD   R0  START
-            LD   R1  END
-     TOP    ADD  R2  R0  R1
-            BRZ  DONE
-            OUT
-            ADD  R0 R0 -1
-            BRNZP TOP
-     DONE   HALT
-
-     START .FILL x39
-     END   .FILL x-30
-
-     .END
-*/
+    char* program[] =
+    {
+     "0010000000000111",
+     "0010001000000111",
+     "0001010000000001",
+     "0000010000000011",
+     "1111000000100001",
+     "0001000000111111",
+     "0000111111111011",
+     "1111000000100101",
+     "0000000000111001",
+     "1111111111010000"
+	 };
 
 
-//    BitString demoStr, sub;
-//
-//	//BSTR_SetValue(&demoStr,15,8);
-//	BSTR_SetBits(&demoStr,"0000000000001111");
-//
-//	BSTR_Display(demoStr,1);
-//
-//	BSTR_Substring(&sub,demoStr,2,4);
-//	BSTR_Display(sub,1);
-//
-//	COMP_Init(&comp);
-//	COMP_Display(comp);   /* displays computer's initial configuration
-//
-//	/* TO DO: load the instructions in the "program" array */
-//
-//	/* Next 3 lines are a test of NOT */
-//	/* Once you are confident that single instructions work, you will */
-//	/* want to replace this with code that loads all the instructions */
-//	/* from the array shown above. */
-//
-//	/* following not instruction is   NOT Dest: R4, Source: R5 */
-//    BitString notInstr;
-//	BSTR_SetBits(&notInstr,"1001100101111111");
-//	COMP_LoadWord(&comp,0,notInstr);
-//    COMP_Display(comp);
-//
-//	/* execute the program */
-//	/* During execution, the only output to the screen should be */
-//	/* the result of executing OUT. */
-//	COMP_Execute(&comp);
-//
-//	/* shows final configuration of computer */
-//	COMP_Display(comp);
-    
+    //initial state
+	COMP_Init(&comp);
+
+	//load instructions (bits) into computer
+	for (int i = 0; i < programSize; i++) {
+	    BSTR_SetBits(&instruction, program[i]);
+	    COMP_LoadWord(&comp, i, instruction);
+//	    COMP_Display(comp);
+	}
+
+	//execute the program
+	COMP_Execute(&comp);
+	//shows final configuration
+	COMP_Display(comp);
 }
-
-
