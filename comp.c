@@ -1,7 +1,3 @@
-/**
- * TCSS 371 HW $
- * Ethan Cheatham
- */
 #include <stdio.h>
 #include "bstr.h"
 #include "comp.h"
@@ -18,7 +14,6 @@ void COMP_Init(Computer *cmp) {
         BSTR_SetValue(&(cmp->mem[m]),0,16);
     }
 }
-
 
 
 void COMP_LoadWord(Computer* comp, int addr, BitString word) {
@@ -67,13 +62,6 @@ void COMP_ExecuteAdd(Computer *comp) {
         int sr2Value = BSTR_GetValueTwosComp(comp->reg[BSTR_GetValue(srBS2)]);// Fetch the SR2 register value
         BSTR_SetValueTwosComp(&comp->reg[BSTR_GetValue(drBS)], sr1Value + sr2Value, 16);
     }
-
-    //get the 'operator value'
-//    status = BSTR_GetValue(comp->reg[BSTR_GetValue(drBS)]);
-
-//    if (status > 0) BSTR_SetValue(&(comp->cc), 1, 3);
-//    if (status < 0) BSTR_SetValue(&(comp->cc), 4, 3);
-//    if (!status) BSTR_SetValue(&(comp->cc), 2, 3);
 
     /* Update the CC flag */
     COMP_ExecuteSetCC(comp, comp->reg[ BSTR_GetValue(drBS)]);
@@ -153,8 +141,6 @@ void COMP_ExecuteBranch(Computer *comp) {
     if ((condition & state_int)) BSTR_SetValue(&comp->pc, offset, 16);
 }
 
-
-
 void COMP_Display(Computer cmp) {
     int r, m;
     printf("\n");
@@ -209,4 +195,3 @@ void COMP_ExecuteSetCC(Computer *comp, BitString bs) {
         BSTR_SetValue(&(comp->cc),2,3);
     } /* If resulting bitstring is zero set CC <- 010 */
 }
-
