@@ -53,9 +53,6 @@ void testAdd() {
 
 
 
-    BSTR_Add(&bStr3, bStr1, bStr2);
-
-
 
 }
 

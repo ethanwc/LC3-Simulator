@@ -65,8 +65,6 @@ void BSTR_Substring(BitString* substr, BitString source,
 /* returns the length of the bistring (i.e. the number of bits) */
 int BSTR_Length(BitString bstr);
 
-void BSTR_Add(BitString *result, BitString bstr1, BitString bstr2);
-
 #endif
 
 

@@ -90,7 +90,6 @@ void BSTR_Display(BitString bstr, int fourGrouping) {
 	    } else {
 			printf("1");
 	    }
-
     }
 }
 

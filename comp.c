@@ -56,9 +56,9 @@ void COMP_ExecuteAdd(Computer *comp) {
     //if immediate mode
     if (value) {
         BSTR_Substring(&srBS2, comp->ir, 11, 5);
-        int immediate = BSTR_GetValueTwosComp(srBS2);
+        int immediate_int = BSTR_GetValueTwosComp(srBS2);
         //adds register and immediate value
-        BSTR_SetValueTwosComp(&comp->reg[BSTR_GetValue(drBS)], originalregister + immediate, 16);
+        BSTR_SetValueTwosComp(&comp->reg[BSTR_GetValue(drBS)], originalregister + immediate_int, 16);
     //not immediate
     } else {
         BSTR_Substring(&srBS2, comp->ir, 13, 3);
@@ -99,17 +99,33 @@ void COMP_ExecuteLoad(Computer *comp) {
 }
 
 void COMP_ExecuteBranch(Computer *comp) {
-    //TODO
+    BitString branch, pc, value;
+    int offset, value_int, cond;
+
+    //break apart instruction
+    BSTR_Substring(&pc, comp->ir, 7, 9);
+    BSTR_Substring(&branch, comp->ir, 0, 3);
+    BSTR_Substring(&value, comp->ir, 4, 3);
+
+    //determine condition
+    cond = BSTR_GetValue(branch);
+    //determine actual value
+    value_int = BSTR_GetValue(value);
+    //determine offset
+    offset = BSTR_GetValueTwosComp(pc) + BSTR_GetValue(comp->pc);
+
+    //sets pc based on offset from branch
+    if (cond && value_int) BSTR_SetValue(&comp->pc, offset, 16);
 }
 
 void COMP_ExecuteTrap(Computer *comp, int* isRunning) {
     BitString trap;
     int id;
-    //get trap op code.
-    BSTR_Substring(&trap, comp->ir, 8, 8);
+    //get trap op code 'id'
+    //    BSTR_Substring(&trap, comp->ir, 8, 8);
     id = BSTR_GetValue(trap);
 
-    if (id == 33) printf("%c", BSTR_GetValue(comp->reg[0]));// OUTPUT
+    if (id == 33) printf("%c", BSTR_GetValue(comp->reg[0])); // OUTPUT
     if (id == 37) *isRunning = 0; // HALT
 }
 
@@ -128,12 +144,11 @@ void COMP_Execute(Computer* comp) {
         BSTR_Substring(&opCode, comp->ir, 0, 4);  /* isolate op code */
         opCodeInt = BSTR_GetValue(opCode); /* get its value */
 
-        /*what kind of instruction is this? */
         if (opCodeInt == 9) COMP_ExecuteNot(comp); //NOT
         if (opCodeInt == 0) COMP_ExecuteBranch(comp); //BRANCH
         if (opCodeInt == 1) COMP_ExecuteAdd(comp); //ADD
         if (opCodeInt == 2) COMP_ExecuteLoad(comp); //LOAD
-        if (opCodeInt == 15) COMP_ExecuteTrap(comp, isRunning); //TRAP
+        if (opCodeInt == 15) COMP_ExecuteTrap(comp, &isRunning); //TRAP
 
     }
 }

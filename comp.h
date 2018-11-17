@@ -31,17 +31,18 @@ void COMP_LoadWord(Computer* comp, int addr, BitString word);
 void COMP_Execute(Computer* comp);
 
 /* Performs Not operation */
-// TODO - Missing Piece: The Condition Code is not set.
 void COMP_ExecuteNot(Computer *comp);
 
+/* Performs Add operation */
 void COMP_ExecuteAdd(Computer *comp);
 
-void COMP_ExecuteNot(Computer *comp);
-
+/* Performs Branch Operation */
 void COMP_ExecuteBranch(Computer *comp);
 
-void COMP_ExecuteLoad(Computer comp);
+/* Performs Load Operation */
+void COMP_ExecuteLoad(Computer *comp);
 
+/* Performs Trap Operation */
 void COMP_ExecuteTrap(Computer *comp, int* running);
 
 #endif
