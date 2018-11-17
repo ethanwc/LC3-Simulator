@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/bstr.c
+stdio.h
+-
+string.h
+-
+bstr.h
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/bstr.h
+
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/bstr.h
+
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/comp.c
+stdio.h
+-
+bstr.h
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/bstr.h
+comp.h
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/comp.h
+
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/comp.h
+bstr.h
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/bstr.h
+
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/simulator.c
+stdio.h
+-
+bstr.h
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/bstr.h
+comp.h
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/comp.h
+

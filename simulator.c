@@ -399,33 +399,33 @@ int main(int argc, const char * argv[]) {
      * result is zero  */
 //    testAddImmediateMode(-5, 5);
 
-
-    /* Test LD instruction */
-
-    int destRegister, pcOffset, initialPC;
-
-    /* Test LD into register 0 with no offset and PC at 0 */
-    // R1 <-- M[PC + 1 + PCOffset]
-    destRegister = 0;   // Load into
-    pcOffset = 0;       // This number of steps ahead
-    initialPC = 0;      // Starting at PC + 1
-    testLdMode(destRegister, pcOffset, initialPC);
-
-
-    /* Test LD into register 0 with positive offset and PC at 0 */
-    // R1 <-- M[PC + 1 + PCOffset]
-    destRegister = 0;   // Load into
-    pcOffset = 10;       // This number of steps ahead
-    initialPC = 0;      // Starting at PC + 1
-    testLdMode(destRegister, pcOffset, initialPC);
-
-
-    /* Test LD into register 0 with negative offset and PC at 10 */
-    // R1 <-- M[PC + 1 + PCOffset]
-    destRegister = 0;   // Load into
-    pcOffset = -5;       // This number of steps ahead
-    initialPC = 10;      // Starting at PC + 1
-    testLdMode(destRegister, pcOffset, initialPC);
+//
+//    /* Test LD instruction */
+//
+//    int destRegister, pcOffset, initialPC;
+//
+//    /* Test LD into register 0 with no offset and PC at 0 */
+//    // R1 <-- M[PC + 1 + PCOffset]
+//    destRegister = 0;   // Load into
+//    pcOffset = 0;       // This number of steps ahead
+//    initialPC = 0;      // Starting at PC + 1
+//    testLdMode(destRegister, pcOffset, initialPC);
+//
+//
+//    /* Test LD into register 0 with positive offset and PC at 0 */
+//    // R1 <-- M[PC + 1 + PCOffset]
+//    destRegister = 0;   // Load into
+//    pcOffset = 10;       // This number of steps ahead
+//    initialPC = 0;      // Starting at PC + 1
+//    testLdMode(destRegister, pcOffset, initialPC);
+//
+//
+//    /* Test LD into register 0 with negative offset and PC at 10 */
+//    // R1 <-- M[PC + 1 + PCOffset]
+//    destRegister = 0;   // Load into
+//    pcOffset = -5;       // This number of steps ahead
+//    initialPC = 10;      // Starting at PC + 1
+//    testLdMode(destRegister, pcOffset, initialPC);
 
 //     bitStringTest();
 
