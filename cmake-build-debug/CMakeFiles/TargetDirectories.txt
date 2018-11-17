@@ -1,0 +1,3 @@
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/cmake-build-debug/CMakeFiles/edit_cache.dir
+/cygdrive/c/Users/Ethan/Desktop/371 hw4/371_hw4/cmake-build-debug/CMakeFiles/371_hw4_git.dir

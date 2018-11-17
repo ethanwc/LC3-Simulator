@@ -1,0 +1,1 @@
+/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/371_hw4_git.dir/simulator.c.o CMakeFiles/371_hw4_git.dir/bstr.c.o CMakeFiles/371_hw4_git.dir/comp.c.o  -o 371_hw4_git.exe -Wl,--out-implib,lib371_hw4_git.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

@@ -180,44 +180,42 @@ void testAddImmediateMode(int a, int b) {
  * Tests the load instruction
  * given a destination register and a 9bit signed PCoffset
  *
- * @param a 3 bit int in the range of 1-7 representing the Destination
- * @param b 9 bit int representing the memory address to fetch the data to be loaded.
+ * @param dest_register 3 bit int in the range of 1-7 representing the Destination.
+ * @param offset 9 bit int representing the memory address to fetch the data to be loaded.
+ * @param initialPC 16 bit int representing the desired initial PC value.
  */
-void testLdMode(int a, int b) {
+void testLdMode(int dest_register, int offset, int initialPC) {
+
     printf("\n\n\t\t####  Starting LD test  ####\n");
 
     /* Initialize computer */
     Computer comp;
     COMP_Init(&comp);
 
+    BSTR_SetValue(&(comp.pc),initialPC,16);
+
+    /* Load some interesting things into the all of the memory registers */
+    int i;
+    for (i = 0; i < 50; i++) {
+        BSTR_SetValueTwosComp(&(comp.mem[i]), i, 16);
+    }
+
     /* Create desired instruction set */
     BitString ldInstr;
-    BSTR_SetBits(&ldInstr, "0001");         // LD Dest: R0
-    /* Create a bitstring for the desired storage address */
+    BSTR_SetBits(&ldInstr, "0010");         // LD Dest: R0
+    /* Create dest_register bitstring for the desired storage address */
     BitString address;
-    BSTR_SetValue(&address, a, 3);
-    /* Create the offset from b */
+    BSTR_SetValue(&address, dest_register, 3);
+    /* Create the offset from offset */
     BitString pcOffset;                     // 9 bit 2's comp binary number
-    BSTR_SetValueTwosComp(&pcOffset, b, 9);
+    BSTR_SetValueTwosComp(&pcOffset, offset, 9);
     /* Create the full instruction needed for LD operation */
-    BitString ldInstrComplete;              // a <-- M[PC + PCoffset9]
+    BitString ldInstrComplete;              // dest_register <-- M[PC + PCoffset9]
     BSTR_Append(&ldInstrComplete, ldInstr, address);
     BSTR_Append(&ldInstrComplete, ldInstrComplete, pcOffset);
 
-    BSTR_Display(ldInstrComplete, 0);
-
     /* Load desired instruction */
-    COMP_LoadWord(&comp, 0, ldInstrComplete);
-
-    /* Load some interesting things in the following 10 registers */
-    int i;
-    for (i = 1; i <= 10; i++) {
-        if (i % 2 == 0) {
-            BSTR_SetValueTwosComp(&(comp.mem[i]), i, 16);
-        } else {
-            BSTR_SetValueTwosComp(&(comp.mem[i]), i * -1, 16);
-        }
-    }
+    COMP_LoadWord(&comp, initialPC, ldInstrComplete);
 
     /* Display initialized computer and loaded instructions */
     printf("\t####  Displaying computers initial state  ####\n");
@@ -231,10 +229,11 @@ void testLdMode(int a, int b) {
     COMP_Display(comp);
 
     printf("\n\t\t####  Finished LD test  ####\n\n");
-    printf("Verify Ra <-- PC + b)\n");
-    printf("Verify R%d <-- ", a); //%d + %d)\n", b);
-    printf("1 + %d\n", b);
+    printf("Verify R_a <-- PC + offset)\n");
+    printf("Verify R_%d <-- ", dest_register); //%d + %d)\n", offset);
+    printf("%d + %d\n", initialPC, offset);
 }
+
 
 void testOutput() {
     printf("Testing Output Operation\n");
@@ -401,7 +400,32 @@ int main(int argc, const char * argv[]) {
 //    testAddImmediateMode(-5, 5);
 
 
-//    testLdMode(1, 6);
+    /* Test LD instruction */
+
+    int destRegister, pcOffset, initialPC;
+
+    /* Test LD into register 0 with no offset and PC at 0 */
+    // R1 <-- M[PC + 1 + PCOffset]
+    destRegister = 0;   // Load into
+    pcOffset = 0;       // This number of steps ahead
+    initialPC = 0;      // Starting at PC + 1
+    testLdMode(destRegister, pcOffset, initialPC);
+
+
+    /* Test LD into register 0 with positive offset and PC at 0 */
+    // R1 <-- M[PC + 1 + PCOffset]
+    destRegister = 0;   // Load into
+    pcOffset = 10;       // This number of steps ahead
+    initialPC = 0;      // Starting at PC + 1
+    testLdMode(destRegister, pcOffset, initialPC);
+
+
+    /* Test LD into register 0 with negative offset and PC at 10 */
+    // R1 <-- M[PC + 1 + PCOffset]
+    destRegister = 0;   // Load into
+    pcOffset = -5;       // This number of steps ahead
+    initialPC = 10;      // Starting at PC + 1
+    testLdMode(destRegister, pcOffset, initialPC);
 
 //     bitStringTest();
 
